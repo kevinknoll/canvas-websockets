@@ -17,7 +17,10 @@
   };
 
   socket.on('message', function (data) {
-    console.log('message recieved:', data.message);
+    if (data && data.message) {
+      setXY(data.message[0], data.message[1]);
+      draw();
+    }
   });
 
   function sendCommand (cmd) {
@@ -42,7 +45,7 @@
 
   function start (e) {
     state.drawing = true;
-    findxy(e);
+    getXY(e);
   }
 
   function stop (e) {
@@ -51,23 +54,26 @@
 
   function trace (e) {
     if (state.drawing) {
-      findxy(e);
-      draw();
+      getXY(e);
     }
   }
 
-  function findxy (e) {
+  function getXY (e) {
+    var x = e.clientX - canvas.offsetLeft;
+    var y = e.clientY - canvas.offsetTop;
+    setXY(x, y);
+    draw();
+    sendCommand([x, y]);
+  }
+
+  function setXY (x, y) {
     state.prev.x = state.curr.x;
     state.prev.y = state.curr.y;
-    state.curr.x = e.clientX - canvas.offsetLeft;
-    state.curr.y = e.clientY - canvas.offsetTop;
+    state.curr.x = x;
+    state.curr.y = y;
   }
 
   function draw () {
-    if (!state.drawing) {
-      return;
-    }
-
     ctx.beginPath();
     ctx.moveTo(state.prev.x, state.prev.y);
     ctx.lineTo(state.curr.x, state.curr.y);
