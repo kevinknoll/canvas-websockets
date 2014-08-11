@@ -1,0 +1,14 @@
+{
+  "name": "canvas-websockets",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "Canvas via WebSockets",
+  "dependencies": {
+    "express": "4.8.2",
+    "socket.io": "1.0.6"
+  },
+  "devDependencies": {
+    "gulp": "3.8.7",
+    "gulp-less": "1.3.3"
+  }
+}
